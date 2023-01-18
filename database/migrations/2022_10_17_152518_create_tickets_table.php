@@ -16,7 +16,8 @@ class CreateTicketsTable extends Migration
         Schema::create('tickets', function (Blueprint $table) {
             $table->bigIncrements('ticket_id');
             $table->integer('booked_seat');
-            $table->foreignId('schedule_id')->constrained('schedules')->onUpdate('cascade')->onDelete('cascade');
+            $table->date('date');
+            $table->foreignId('schedule_id')->constrained('schedules')->references('schedule_id')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
@@ -30,5 +31,6 @@ class CreateTicketsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('tickets');
+        
     }
 }

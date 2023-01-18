@@ -14,13 +14,12 @@ class CreateSchedulesTable extends Migration
     public function up()
     {
         Schema::create('schedules', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->bigIncrements('schedule_id');
             $table->time('departure_time');
             $table->time('arrival_time');
-            $table->date('date');
             $table->double('price');
             $table->integer('max_seat');
-            $table->foreignId('route_id')->constrained('routes')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('bus_route_id')->constrained('bus_routes')->references('bus_route_id')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -33,5 +32,6 @@ class CreateSchedulesTable extends Migration
     public function down()
     {
         Schema::dropIfExists('schedules');
+        
     }
 }

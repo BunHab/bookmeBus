@@ -26,7 +26,7 @@
         <!-- Brand Logo -->
         <a href="admin.php" class="brand-link">
 
-            <span class="brand-text font-weight-light">Sun 16, Oct 22</span>
+            <span class="brand-text font-weight-light">{{now()->format('Y-m-d')}}</span>
         </a>
 
         <!-- Sidebar -->
@@ -37,7 +37,7 @@
                     <img src="{{asset('/assets/')}}/images/trainlg.png" class="img-circle elevation-2" alt="User Image">
                 </div>
                 <div class="info">
-                    <a href="#" class="d-block">Admin</a>
+                    <a href="/" class="d-block">{{strtoupper(Auth::user()->name)}}</a>
                 </div>
             </div>
 
@@ -87,18 +87,18 @@
                     </li>
                     <li class="nav-item">
                         <a href="{{url('/admin/dashboard/operator')}}" class="nav-link active">
-                            <i class="nav-icon fas fa-train"></i>
+                            <i class="nav-icon fas fa-bus"></i>
                             <p>
-                                Trains 
+                                Operators
                             </p>
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="#" class="nav-link      ">
+                        <a href="{{url('/admin/dashboard/location')}}" class="nav-link      ">
                             <i class="nav-icon fas fa-file-pdf"></i>
                             <p>
-                                Report
+                                Location
                             </p>
                         </a>
 
@@ -149,6 +149,11 @@
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1 class="m-0 text-dark"> Administrator Dashboard</h1>
+                        @if(session('status'))
+                        <div>
+                            <h6 class="m-0 text-red"> {{session('status')}}</h6>
+                        </div>
+                        @endif
                     </div><!-- /.col -->
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
@@ -166,11 +171,11 @@
                 <div class="card card-success">
                     <div class="card-header">
                         <h3 class="card-title">
-                            All Trains</h3>
+                            All Operator</h3>
                         <div class='float-right'>
                             <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
                                 data-target="#add">
-                                Add New Train &#128645;
+                                Add New Operator &#128645;
                             </button></div>
                     </div>
 
@@ -181,25 +186,24 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Train Name</th>
-                                    <th>First Class Seat</th>
-                                    <th>Second Class Seat</th>
+                                    <th>Operator Name</th>
+                                    <th>Phone Number</th>
+                                    
                                     <th style="width: 30%;">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                
+                                @foreach ($operators as $operator)
                                 <tr>
-                                    <td>1</td>
-                                    <td>Kano Rails</td>
-                                    <td>30</td>
-                                    <td>800</td>
+                                    <td>{{$operator->operator_id}}</td>
+                                    <td>{{$operator->operator_name}}</td>
+                                    <td>{{$operator->operator_phone_num}}</td>
                                     <td>
-                                        <form method="POST">
+                                        <form method="GET" action="{{url('admin/dashboard/deleteOperator/'.$operator->operator_id)}}">
                                             <button type="button" class="btn btn-primary" data-toggle="modal"
-                                                data-target="#edit1">
+                                                data-target="#edit{{$operator->operator_id}}">
                                                 Edit
-                                            </button> -
+                                            </button> 
 
                                             <input type="hidden" class="form-control" name="del_train"
                                                 value="1" required id="">
@@ -212,36 +216,32 @@
                                     </td>
                                 </tr>
 
-                                <div class="modal fade" id="edit1">
+                                <div class="modal fade" id ="edit{{$operator->operator_id}}">
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h4 class="modal-title">Editing Kano Rails</h4>
+                                                <h4 class="modal-title">Editing {{$operator->operator_name}}</h4>
                                                 <button type="button" class="close" data-dismiss="modal"
                                                     aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <form action="" method="post">
+                                                <form action="{{url('admin/dashboard/updateOperator/'.$operator->operator_id)}}" method="post">
+                                                    @csrf
+                                                    @method('PUT')
                                                     <input type="hidden" class="form-control" name="id"
-                                                        value="1" required id="">
-                                                    <p>Train Name : <input type="text" class="form-control"
-                                                            name="name" value="Kano Rails"
-                                                            required minlength="3" id=""></p>
-                                                    <p>First Class Capacity : <input type="number" min='0'
-                                                            class="form-control"
-                                                            value="30"
-                                                            name="first_seat" required id="">
-                                                    </p>
-                                                    <p> Class Capacity : <input type="number" min='0'
-                                                            class="form-control"
-                                                            value="800"
-                                                            name="second_seat" required id="">
-                                                    </p>
+                                                         required >
+                                                    <p>Operator Name : <input type="text" class="form-control"
+                                                            name="update_name" value="{{$operator->operator_name}}"
+                                                            required minlength="3" ></p>
+                                                    <p>Phone Number : <input type="text" min='0'
+                                                            class="form-control"    
+                                                            name="update_phone" required value="{{$operator->operator_phone_num}}">
+                                                    </p>                                            
                                                     <p>
 
-                                                        <input class="btn btn-info" type="submit" value="Edit Train"
+                                                        <input class="btn btn-info" type="submit" value="Edit Operator"
                                                             name='edit'>
                                                     </p>
                                                 </form>
@@ -255,610 +255,7 @@
                                         <!-- /.modal-dialog -->
                                     </div>
                                     <!-- /.modal -->
-                                    
-                                <tr>
-                                    <td>2</td>
-                                    <td>British Railways</td>
-                                    <td>20</td>
-                                    <td>900</td>
-                                    <td>
-                                        <form method="POST">
-                                            <button type="button" class="btn btn-primary" data-toggle="modal"
-                                                data-target="#edit2">
-                                                Edit
-                                            </button> -
-
-                                            <input type="hidden" class="form-control" name="del_train"
-                                                value="2" required id="">
-                                            <button type="submit"
-                                                onclick="return confirm('Are you sure about this?')"
-                                                class="btn btn-danger">
-                                                Delete
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-
-                                <div class="modal fade" id="edit2">
-                                    <div class="modal-dialog modal-lg">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title">Editing British Railways</h4>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form action="" method="post">
-                                                    <input type="hidden" class="form-control" name="id"
-                                                        value="2" required id="">
-                                                    <p>Train Name : <input type="text" class="form-control"
-                                                            name="name" value="British Railways"
-                                                            required minlength="3" id=""></p>
-                                                    <p>First Class Capacity : <input type="number" min='0'
-                                                            class="form-control"
-                                                            value="20"
-                                                            name="first_seat" required id="">
-                                                    </p>
-                                                    <p> Class Capacity : <input type="number" min='0'
-                                                            class="form-control"
-                                                            value="900"
-                                                            name="second_seat" required id="">
-                                                    </p>
-                                                    <p>
-
-                                                        <input class="btn btn-info" type="submit" value="Edit Train"
-                                                            name='edit'>
-                                                    </p>
-                                                </form>
-                                                <div class="modal-footer justify-content-between">
-                                                    <button type="button" class="btn btn-default"
-                                                        data-dismiss="modal">Close</button>
-                                                </div>
-                                            </div>
-                                            <!-- /.modal-content -->
-                                        </div>
-                                        <!-- /.modal-dialog -->
-                                    </div>
-                                    <!-- /.modal -->
-                                    
-                                <tr>
-                                    <td>3</td>
-                                    <td>Wester Railways</td>
-                                    <td>10</td>
-                                    <td>600</td>
-                                    <td>
-                                        <form method="POST">
-                                            <button type="button" class="btn btn-primary" data-toggle="modal"
-                                                data-target="#edit3">
-                                                Edit
-                                            </button> -
-
-                                            <input type="hidden" class="form-control" name="del_train"
-                                                value="3" required id="">
-                                            <button type="submit"
-                                                onclick="return confirm('Are you sure about this?')"
-                                                class="btn btn-danger">
-                                                Delete
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-
-                                <div class="modal fade" id="edit3">
-                                    <div class="modal-dialog modal-lg">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title">Editing Wester Railways</h4>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form action="" method="post">
-                                                    <input type="hidden" class="form-control" name="id"
-                                                        value="3" required id="">
-                                                    <p>Train Name : <input type="text" class="form-control"
-                                                            name="name" value="Wester Railways"
-                                                            required minlength="3" id=""></p>
-                                                    <p>First Class Capacity : <input type="number" min='0'
-                                                            class="form-control"
-                                                            value="10"
-                                                            name="first_seat" required id="">
-                                                    </p>
-                                                    <p> Class Capacity : <input type="number" min='0'
-                                                            class="form-control"
-                                                            value="600"
-                                                            name="second_seat" required id="">
-                                                    </p>
-                                                    <p>
-
-                                                        <input class="btn btn-info" type="submit" value="Edit Train"
-                                                            name='edit'>
-                                                    </p>
-                                                </form>
-                                                <div class="modal-footer justify-content-between">
-                                                    <button type="button" class="btn btn-default"
-                                                        data-dismiss="modal">Close</button>
-                                                </div>
-                                            </div>
-                                            <!-- /.modal-content -->
-                                        </div>
-                                        <!-- /.modal-dialog -->
-                                    </div>
-                                    <!-- /.modal -->
-                                    
-                                <tr>
-                                    <td>4</td>
-                                    <td>Lagos Rails</td>
-                                    <td>400</td>
-                                    <td>1000</td>
-                                    <td>
-                                        <form method="POST">
-                                            <button type="button" class="btn btn-primary" data-toggle="modal"
-                                                data-target="#edit7">
-                                                Edit
-                                            </button> -
-
-                                            <input type="hidden" class="form-control" name="del_train"
-                                                value="7" required id="">
-                                            <button type="submit"
-                                                onclick="return confirm('Are you sure about this?')"
-                                                class="btn btn-danger">
-                                                Delete
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-
-                                <div class="modal fade" id="edit7">
-                                    <div class="modal-dialog modal-lg">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title">Editing Lagos Rails</h4>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form action="" method="post">
-                                                    <input type="hidden" class="form-control" name="id"
-                                                        value="7" required id="">
-                                                    <p>Train Name : <input type="text" class="form-control"
-                                                            name="name" value="Lagos Rails"
-                                                            required minlength="3" id=""></p>
-                                                    <p>First Class Capacity : <input type="number" min='0'
-                                                            class="form-control"
-                                                            value="400"
-                                                            name="first_seat" required id="">
-                                                    </p>
-                                                    <p> Class Capacity : <input type="number" min='0'
-                                                            class="form-control"
-                                                            value="1000"
-                                                            name="second_seat" required id="">
-                                                    </p>
-                                                    <p>
-
-                                                        <input class="btn btn-info" type="submit" value="Edit Train"
-                                                            name='edit'>
-                                                    </p>
-                                                </form>
-                                                <div class="modal-footer justify-content-between">
-                                                    <button type="button" class="btn btn-default"
-                                                        data-dismiss="modal">Close</button>
-                                                </div>
-                                            </div>
-                                            <!-- /.modal-content -->
-                                        </div>
-                                        <!-- /.modal-dialog -->
-                                    </div>
-                                    <!-- /.modal -->
-                                    
-                                <tr>
-                                    <td>5</td>
-                                    <td>Marble Railways</td>
-                                    <td>395</td>
-                                    <td>780</td>
-                                    <td>
-                                        <form method="POST">
-                                            <button type="button" class="btn btn-primary" data-toggle="modal"
-                                                data-target="#edit8">
-                                                Edit
-                                            </button> -
-
-                                            <input type="hidden" class="form-control" name="del_train"
-                                                value="8" required id="">
-                                            <button type="submit"
-                                                onclick="return confirm('Are you sure about this?')"
-                                                class="btn btn-danger">
-                                                Delete
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-
-                                <div class="modal fade" id="edit8">
-                                    <div class="modal-dialog modal-lg">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title">Editing Marble Railways</h4>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form action="" method="post">
-                                                    <input type="hidden" class="form-control" name="id"
-                                                        value="8" required id="">
-                                                    <p>Train Name : <input type="text" class="form-control"
-                                                            name="name" value="Marble Railways"
-                                                            required minlength="3" id=""></p>
-                                                    <p>First Class Capacity : <input type="number" min='0'
-                                                            class="form-control"
-                                                            value="395"
-                                                            name="first_seat" required id="">
-                                                    </p>
-                                                    <p> Class Capacity : <input type="number" min='0'
-                                                            class="form-control"
-                                                            value="780"
-                                                            name="second_seat" required id="">
-                                                    </p>
-                                                    <p>
-
-                                                        <input class="btn btn-info" type="submit" value="Edit Train"
-                                                            name='edit'>
-                                                    </p>
-                                                </form>
-                                                <div class="modal-footer justify-content-between">
-                                                    <button type="button" class="btn btn-default"
-                                                        data-dismiss="modal">Close</button>
-                                                </div>
-                                            </div>
-                                            <!-- /.modal-content -->
-                                        </div>
-                                        <!-- /.modal-dialog -->
-                                    </div>
-                                    <!-- /.modal -->
-                                    
-                                <tr>
-                                    <td>6</td>
-                                    <td>Renfee R</td>
-                                    <td>400</td>
-                                    <td>850</td>
-                                    <td>
-                                        <form method="POST">
-                                            <button type="button" class="btn btn-primary" data-toggle="modal"
-                                                data-target="#edit9">
-                                                Edit
-                                            </button> -
-
-                                            <input type="hidden" class="form-control" name="del_train"
-                                                value="9" required id="">
-                                            <button type="submit"
-                                                onclick="return confirm('Are you sure about this?')"
-                                                class="btn btn-danger">
-                                                Delete
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-
-                                <div class="modal fade" id="edit9">
-                                    <div class="modal-dialog modal-lg">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title">Editing Renfee R</h4>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form action="" method="post">
-                                                    <input type="hidden" class="form-control" name="id"
-                                                        value="9" required id="">
-                                                    <p>Train Name : <input type="text" class="form-control"
-                                                            name="name" value="Renfee R"
-                                                            required minlength="3" id=""></p>
-                                                    <p>First Class Capacity : <input type="number" min='0'
-                                                            class="form-control"
-                                                            value="400"
-                                                            name="first_seat" required id="">
-                                                    </p>
-                                                    <p> Class Capacity : <input type="number" min='0'
-                                                            class="form-control"
-                                                            value="850"
-                                                            name="second_seat" required id="">
-                                                    </p>
-                                                    <p>
-
-                                                        <input class="btn btn-info" type="submit" value="Edit Train"
-                                                            name='edit'>
-                                                    </p>
-                                                </form>
-                                                <div class="modal-footer justify-content-between">
-                                                    <button type="button" class="btn btn-default"
-                                                        data-dismiss="modal">Close</button>
-                                                </div>
-                                            </div>
-                                            <!-- /.modal-content -->
-                                        </div>
-                                        <!-- /.modal-dialog -->
-                                    </div>
-                                    <!-- /.modal -->
-                                    
-                                <tr>
-                                    <td>7</td>
-                                    <td>Venice Express</td>
-                                    <td>500</td>
-                                    <td>1200</td>
-                                    <td>
-                                        <form method="POST">
-                                            <button type="button" class="btn btn-primary" data-toggle="modal"
-                                                data-target="#edit10">
-                                                Edit
-                                            </button> -
-
-                                            <input type="hidden" class="form-control" name="del_train"
-                                                value="10" required id="">
-                                            <button type="submit"
-                                                onclick="return confirm('Are you sure about this?')"
-                                                class="btn btn-danger">
-                                                Delete
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-
-                                <div class="modal fade" id="edit10">
-                                    <div class="modal-dialog modal-lg">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title">Editing Venice Express</h4>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form action="" method="post">
-                                                    <input type="hidden" class="form-control" name="id"
-                                                        value="10" required id="">
-                                                    <p>Train Name : <input type="text" class="form-control"
-                                                            name="name" value="Venice Express"
-                                                            required minlength="3" id=""></p>
-                                                    <p>First Class Capacity : <input type="number" min='0'
-                                                            class="form-control"
-                                                            value="500"
-                                                            name="first_seat" required id="">
-                                                    </p>
-                                                    <p> Class Capacity : <input type="number" min='0'
-                                                            class="form-control"
-                                                            value="1200"
-                                                            name="second_seat" required id="">
-                                                    </p>
-                                                    <p>
-
-                                                        <input class="btn btn-info" type="submit" value="Edit Train"
-                                                            name='edit'>
-                                                    </p>
-                                                </form>
-                                                <div class="modal-footer justify-content-between">
-                                                    <button type="button" class="btn btn-default"
-                                                        data-dismiss="modal">Close</button>
-                                                </div>
-                                            </div>
-                                            <!-- /.modal-content -->
-                                        </div>
-                                        <!-- /.modal-dialog -->
-                                    </div>
-                                    <!-- /.modal -->
-                                    
-                                <tr>
-                                    <td>8</td>
-                                    <td>Orient Express</td>
-                                    <td>200</td>
-                                    <td>500</td>
-                                    <td>
-                                        <form method="POST">
-                                            <button type="button" class="btn btn-primary" data-toggle="modal"
-                                                data-target="#edit11">
-                                                Edit
-                                            </button> -
-
-                                            <input type="hidden" class="form-control" name="del_train"
-                                                value="11" required id="">
-                                            <button type="submit"
-                                                onclick="return confirm('Are you sure about this?')"
-                                                class="btn btn-danger">
-                                                Delete
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-
-                                <div class="modal fade" id="edit11">
-                                    <div class="modal-dialog modal-lg">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title">Editing Orient Express</h4>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form action="" method="post">
-                                                    <input type="hidden" class="form-control" name="id"
-                                                        value="11" required id="">
-                                                    <p>Train Name : <input type="text" class="form-control"
-                                                            name="name" value="Orient Express"
-                                                            required minlength="3" id=""></p>
-                                                    <p>First Class Capacity : <input type="number" min='0'
-                                                            class="form-control"
-                                                            value="200"
-                                                            name="first_seat" required id="">
-                                                    </p>
-                                                    <p> Class Capacity : <input type="number" min='0'
-                                                            class="form-control"
-                                                            value="500"
-                                                            name="second_seat" required id="">
-                                                    </p>
-                                                    <p>
-
-                                                        <input class="btn btn-info" type="submit" value="Edit Train"
-                                                            name='edit'>
-                                                    </p>
-                                                </form>
-                                                <div class="modal-footer justify-content-between">
-                                                    <button type="button" class="btn btn-default"
-                                                        data-dismiss="modal">Close</button>
-                                                </div>
-                                            </div>
-                                            <!-- /.modal-content -->
-                                        </div>
-                                        <!-- /.modal-dialog -->
-                                    </div>
-                                    <!-- /.modal -->
-                                    
-                                <tr>
-                                    <td>9</td>
-                                    <td>Phantom Express</td>
-                                    <td>250</td>
-                                    <td>600</td>
-                                    <td>
-                                        <form method="POST">
-                                            <button type="button" class="btn btn-primary" data-toggle="modal"
-                                                data-target="#edit12">
-                                                Edit
-                                            </button> -
-
-                                            <input type="hidden" class="form-control" name="del_train"
-                                                value="12" required id="">
-                                            <button type="submit"
-                                                onclick="return confirm('Are you sure about this?')"
-                                                class="btn btn-danger">
-                                                Delete
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-
-                                <div class="modal fade" id="edit12">
-                                    <div class="modal-dialog modal-lg">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title">Editing Phantom Express</h4>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form action="" method="post">
-                                                    <input type="hidden" class="form-control" name="id"
-                                                        value="12" required id="">
-                                                    <p>Train Name : <input type="text" class="form-control"
-                                                            name="name" value="Phantom Express"
-                                                            required minlength="3" id=""></p>
-                                                    <p>First Class Capacity : <input type="number" min='0'
-                                                            class="form-control"
-                                                            value="250"
-                                                            name="first_seat" required id="">
-                                                    </p>
-                                                    <p> Class Capacity : <input type="number" min='0'
-                                                            class="form-control"
-                                                            value="600"
-                                                            name="second_seat" required id="">
-                                                    </p>
-                                                    <p>
-
-                                                        <input class="btn btn-info" type="submit" value="Edit Train"
-                                                            name='edit'>
-                                                    </p>
-                                                </form>
-                                                <div class="modal-footer justify-content-between">
-                                                    <button type="button" class="btn btn-default"
-                                                        data-dismiss="modal">Close</button>
-                                                </div>
-                                            </div>
-                                            <!-- /.modal-content -->
-                                        </div>
-                                        <!-- /.modal-dialog -->
-                                    </div>
-                                    <!-- /.modal -->
-                                    
-                                <tr>
-                                    <td>10</td>
-                                    <td>Marshland Express</td>
-                                    <td>300</td>
-                                    <td>500</td>
-                                    <td>
-                                        <form method="POST">
-                                            <button type="button" class="btn btn-primary" data-toggle="modal"
-                                                data-target="#edit13">
-                                                Edit
-                                            </button> -
-
-                                            <input type="hidden" class="form-control" name="del_train"
-                                                value="13" required id="">
-                                            <button type="submit"
-                                                onclick="return confirm('Are you sure about this?')"
-                                                class="btn btn-danger">
-                                                Delete
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-
-                                <div class="modal fade" id="edit13">
-                                    <div class="modal-dialog modal-lg">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title">Editing Marshland Express</h4>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form action="" method="post">
-                                                    <input type="hidden" class="form-control" name="id"
-                                                        value="13" required id="">
-                                                    <p>Train Name : <input type="text" class="form-control"
-                                                            name="name" value="Marshland Express"
-                                                            required minlength="3" id=""></p>
-                                                    <p>First Class Capacity : <input type="number" min='0'
-                                                            class="form-control"
-                                                            value="300"
-                                                            name="first_seat" required id="">
-                                                    </p>
-                                                    <p> Class Capacity : <input type="number" min='0'
-                                                            class="form-control"
-                                                            value="500"
-                                                            name="second_seat" required id="">
-                                                    </p>
-                                                    <p>
-
-                                                        <input class="btn btn-info" type="submit" value="Edit Train"
-                                                            name='edit'>
-                                                    </p>
-                                                </form>
-                                                <div class="modal-footer justify-content-between">
-                                                    <button type="button" class="btn btn-default"
-                                                        data-dismiss="modal">Close</button>
-                                                </div>
-                                            </div>
-                                            <!-- /.modal-content -->
-                                        </div>
-                                        <!-- /.modal-dialog -->
-                                    </div>
-                                    <!-- /.modal -->
-                                    
+                                    @endforeach
                             </tbody>
                            
                         </table>
@@ -878,33 +275,29 @@
 <div class="modal-dialog modal-lg">
     <div class="modal-content" align="center">
         <div class="modal-header">
-            <h4 class="modal-title">Add New Train &#128646;
+            <h4 class="modal-title">Add New Operator &#128646;
             </h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div class="modal-body">
-            <form action="" method="post">
-
+            <form action="/admin/dashboard/saveOperator" method="post">
+                @csrf
                 <table class="table table-bordered">
                     <tr>
-                        <th>Train Name</th>
+                        <th>Operator Name</th>
                         <td><input type="text" class="form-control" name="name" required minlength="3" id=""></td>
                     </tr>
                     <tr>
-                        <th>First Class Capacity</th>
-                        <td><input type="number" min='0' class="form-control" name="first_seat" required id=""></td>
+                        <th>Phone Number</th>
+                        <td><input type="text" max='11' class="form-control" name="phone" required id=""></td>
                     </tr>
-                    <tr>
-                        <th>Second Class Capacity</th>
-                        <td><input type="number" min='0' class="form-control" name="second_seat" required id="">
-                        </td>
-                    </tr>
+                    
                     <tr>
                         <td colspan="2">
 
-                            <input class="btn btn-info" type="submit" value="Add Train" name='submit'>
+                            <input class="btn btn-info" type="submit" value="Add Operator" name='submit'>
                         </td>
                     </tr>
                 </table>

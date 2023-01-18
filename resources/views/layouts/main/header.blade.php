@@ -54,7 +54,7 @@
                 </button>
 
                 <a class="navbar-brand" href="{{url('/')}}">O<span class="themecolor">
-                    n</span>line Ticket Reservation System</a>
+                    n</span>line Bus Booking</a>
 
             </div>
 

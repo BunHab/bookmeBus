@@ -26,7 +26,7 @@
         <!-- Brand Logo -->
         <a href="{{url('/admin/dashboard')}}" class="brand-link">
 
-            <span class="brand-text font-weight-light">Sun 16, Oct 22</span>
+            <span class="brand-text font-weight-light">{{now()->format('Y-m-d')}}</span>
         </a>
 
         <!-- Sidebar -->
@@ -37,7 +37,7 @@
                     <img src="{{asset('/assets/')}}/images/trainlg.png" class="img-circle elevation-2" alt="User Image">
                 </div>
                 <div class="info">
-                    <a href="#" class="d-block">Admin</a>
+                    <a href="/" class="d-block">{{strtoupper(Auth::user()->name)}}</a>
                 </div>
             </div>
 
@@ -87,18 +87,18 @@
                     </li>
                     <li class="nav-item">
                         <a href="{{url('/admin/dashboard/operator')}}" class="nav-link      ">
-                            <i class="nav-icon fas fa-train"></i>
+                            <i class="nav-icon fas fa-bus"></i>
                             <p>
-                                Trains 
+                                Operators 
                             </p>
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="#" class="nav-link      ">
+                        <a href="{{url('/admin/dashboard/location')}}" class="nav-link      ">
                             <i class="nav-icon fas fa-file-pdf"></i>
                             <p>
-                                Report
+                                Location
                             </p>
                         </a>
 
@@ -180,22 +180,22 @@
                                         <th>Full Name</th>
                                         <th>Email</th>
                                         <th>Contact</th>
-                                        <th>Image</th>
+                                        <th>Address</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @foreach($users as $user)
                                     <tr>
-                                        <td>1</td>
-                                        <td>Demo Account</td>
-                                        <td>demoaccount@mail.com</td>
-                                        <td>7800000000</td>
-                                        <td><img src="{{asset('/assets/')}}/uploads/404a6378027a553d980b99162a5b4ce8.png"
-                                                class="img img-rounded" width="80" height="80" /></td>
+                                        <td>{{$user->id}}</td>
+                                        <td>{{$user->name}}</td>
+                                        <td>{{$user->email}}</td>
+                                        <td>{{$user->phone_num}}</td>
+                                        <td>{{$user->address}}</td>
 
 
                                         <td>
-                                                                                            <a href="admin.php?page=users&status=0&id=8">
+                                                                                            <a href="#">
                                                 <button
                                                     onclick="return confirm('You are about denying this user access to  his/her account.')"
                                                     type="submit" class="btn btn-danger">
@@ -203,133 +203,7 @@
                                                 </button></a>
                                                                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Liam Moore</td>
-                                        <td>liamoore@gmail.com</td>
-                                        <td>7000000000</td>
-                                        <td><img src="{{asset('/assets/')}}/uploads/f3fc8566140434f0a3f47303c62d5146.jpg"
-                                                class="img img-rounded" width="80" height="80" /></td>
-
-
-                                        <td>
-                                                                                            <a href="admin.php?page=users&status=0&id=7">
-                                                <button
-                                                    onclick="return confirm('You are about denying this user access to  his/her account.')"
-                                                    type="submit" class="btn btn-danger">
-                                                    Disable Account
-                                                </button></a>
-                                                                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>Test Passenger</td>
-                                        <td>testpass@mail.com</td>
-                                        <td>0000002000</td>
-                                        <td><img src="{{asset('/assets/')}}/uploads/f3fc8566140434f0a3f47303c62d5146.jpg"
-                                                class="img img-rounded" width="80" height="80" /></td>
-
-
-                                        <td>
-                                                                                            <a href="admin.php?page=users&status=0&id=6">
-                                                <button
-                                                    onclick="return confirm('You are about denying this user access to  his/her account.')"
-                                                    type="submit" class="btn btn-danger">
-                                                    Disable Account
-                                                </button></a>
-                                                                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>4</td>
-                                        <td>Passenger Four</td>
-                                        <td>pass4@mail.com</td>
-                                        <td>0000010020</td>
-                                        <td><img src="{{asset('/assets/')}}/uploads/f3fc8566140434f0a3f47303c62d5146.jpg"
-                                                class="img img-rounded" width="80" height="80" /></td>
-
-
-                                        <td>
-                                                                                            <a href="admin.php?page=users&status=0&id=5">
-                                                <button
-                                                    onclick="return confirm('You are about denying this user access to  his/her account.')"
-                                                    type="submit" class="btn btn-danger">
-                                                    Disable Account
-                                                </button></a>
-                                                                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>5</td>
-                                        <td>Passenger Three</td>
-                                        <td>pass3@mail.com</td>
-                                        <td>9000001000</td>
-                                        <td><img src="uploads/f3fc8566140434f0a3f47303c62d5146.jpg"
-                                                class="img img-rounded" width="80" height="80" /></td>
-
-
-                                        <td>
-                                                                                            <a href="admin.php?page=users&status=0&id=4">
-                                                <button
-                                                    onclick="return confirm('You are about denying this user access to  his/her account.')"
-                                                    type="submit" class="btn btn-danger">
-                                                    Disable Account
-                                                </button></a>
-                                                                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>6</td>
-                                        <td>Passenger Two</td>
-                                        <td>pass2@mail.com</td>
-                                        <td>1400000020</td>
-                                        <td><img src="uploads/f3fc8566140434f0a3f47303c62d5146.jpg"
-                                                class="img img-rounded" width="80" height="80" /></td>
-
-
-                                        <td>
-                                                                                            <a href="admin.php?page=users&status=1&id=3">
-                                                <button
-                                                    onclick="return confirm('You are about allowing this user be able to login his/her account.')"
-                                                    type="submit" class="btn btn-success">
-                                                    Enable Account
-                                                </button></a>
-                                                                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>7</td>
-                                        <td>Adelabu Simbiat</td>
-                                        <td>jobowonubi@otrs.com</td>
-                                        <td>3000002000</td>
-                                        <td><img src="uploads/f3fc8566140434f0a3f47303c62d5146.jpg"
-                                                class="img img-rounded" width="80" height="80" /></td>
-
-
-                                        <td>
-                                                                                            <a href="admin.php?page=users&status=0&id=2">
-                                                <button
-                                                    onclick="return confirm('You are about denying this user access to  his/her account.')"
-                                                    type="submit" class="btn btn-danger">
-                                                    Disable Account
-                                                </button></a>
-                                                                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>8</td>
-                                        <td>Passenger One</td>
-                                        <td>pas1o@mail.com</td>
-                                        <td>0780100000</td>
-                                        <td><img src="uploads/f3fc8566140434f0a3f47303c62d5146.jpg"
-                                                class="img img-rounded" width="80" height="80" /></td>
-
-
-                                        <td>
-                                                                                            <a href="admin.php?page=users&status=0&id=1">
-                                                <button
-                                                    onclick="return confirm('You are about denying this user access to  his/her account.')"
-                                                    type="submit" class="btn btn-danger">
-                                                    Disable Account
-                                                </button></a>
-                                                                                        </td>
-                                    </tr>
-                                    
+                                    @endforeach
                                 </tbody>
 
                             </table>

@@ -26,7 +26,7 @@
         <!-- Brand Logo -->
         <a href="admin.php" class="brand-link">
 
-            <span class="brand-text font-weight-light">Sun 16, Oct 22</span>
+            <span class="brand-text font-weight-light">{{now()->format('Y-m-d')}}</span>
         </a>
 
         <!-- Sidebar -->
@@ -37,7 +37,7 @@
                     <img src="{{asset('/assets/')}}/images/trainlg.png" class="img-circle elevation-2" alt="User Image">
                 </div>
                 <div class="info">
-                    <a href="#" class="d-block">Admin</a>
+                    <a href="/" class="d-block">{{strtoupper(Auth::user()->name)}}</a>
                 </div>
             </div>
 
@@ -87,18 +87,18 @@
                     </li>
                     <li class="nav-item">
                         <a href="{{url('/admin/dashboard/operator')}}" class="nav-link      ">
-                            <i class="nav-icon fas fa-train"></i>
+                            <i class="nav-icon fas fa-bus"></i>
                             <p>
-                                Trains 
+                                Operators
                             </p>
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="#" class="nav-link      ">
+                        <a href="{{url('/admin/dashboard/location')}}" class="nav-link      ">
                             <i class="nav-icon fas fa-file-pdf"></i>
                             <p>
-                                Report
+                                Location
                             </p>
                         </a>
 
@@ -174,129 +174,27 @@
                     <table id='example1' class="table table-striped table-bordered table-hover table-valign-middle">
                         <thead>
                             <tr>
+                                <th>User Name</th>
                                 <th>Route</th>
                                 <th>Date</th>
-                                <th>First Class</th>
-                                <th>Second Class</th>
-                                <th>Capacity</th>
+                                <th>Price</th>
+                                <th>Amount</th>
+                                <th>Operator</th>
+                    
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach($tickets as $ticket)
                             <tr>
-                                  <td>Fort Hammits to Aux Cursbur</td>
-                                  <td>11-08-2020 - 6:30 PM</td>
-                                  <td>$ 2380</td>
-                                  <td>$ 0</td>
-                                  <td>400 Seat(s) Available for First Class<hr/>994 Seat(s) Available for Second Class</td>
-                                  </tr><tr>
-                                  <td>Treeblooms to Bridghamgascon</td>
-                                  <td>11-08-2020 - 6:30 PM</td>
-                                  <td>$ 680</td>
-                                  <td>$ 0</td>
-                                  <td>199 Seat(s) Available for First Class<hr/>492 Seat(s) Available for Second Class</td>
-                                  </tr><tr>
-                                  <td>Fort Hammits to Aux Cursbur</td>
-                                  <td>11-08-2020 - 6:30 PM</td>
-                                  <td>$ 2380</td>
-                                  <td>$ 0</td>
-                                  <td>400 Seat(s) Available for First Class<hr/>994 Seat(s) Available for Second Class</td>
-                                  </tr><tr>
-                                  <td>Treeblooms to Bridghamgascon</td>
-                                  <td>11-08-2020 - 6:30 PM</td>
-                                  <td>$ 680</td>
-                                  <td>$ 0</td>
-                                  <td>199 Seat(s) Available for First Class<hr/>492 Seat(s) Available for Second Class</td>
-                                  </tr><tr>
-                                  <td>Hurstcracombe to Treeblooms</td>
-                                  <td>13-08-2020 - 6:30 PM</td>
-                                  <td>$ 0</td>
-                                  <td>$ 8080</td>
-                                  <td>192 Seat(s) Available for First Class<hr/>500 Seat(s) Available for Second Class</td>
-                                  </tr><tr>
-                                  <td>Hurstcracombe to Treeblooms</td>
-                                  <td>30-08-2020 - 11:00 AM</td>
-                                  <td>$ 1080</td>
-                                  <td>$ 0</td>
-                                  <td>500 Seat(s) Available for First Class<hr/>1192 Seat(s) Available for Second Class</td>
-                                  </tr><tr>
-                                  <td>Hurstcracombe to Treeblooms</td>
-                                  <td>07-11-2020 - 10:24 PM</td>
-                                  <td>$ 8200</td>
-                                  <td>$ 0</td>
-                                  <td>395 Seat(s) Available for First Class<hr/>748 Seat(s) Available for Second Class</td>
-                                  </tr><tr>
-                                  <td>Hurstcracombe to Treeblooms</td>
-                                  <td>07-11-2020 - 10:24 PM</td>
-                                  <td>$ 8200</td>
-                                  <td>$ 0</td>
-                                  <td>395 Seat(s) Available for First Class<hr/>748 Seat(s) Available for Second Class</td>
-                                  </tr><tr>
-                                  <td>St Bawle to San Ghammea</td>
-                                  <td>08-11-2020 - 3:13 PM</td>
-                                  <td>$ 0</td>
-                                  <td>$ 1410</td>
-                                  <td>394 Seat(s) Available for First Class<hr/>780 Seat(s) Available for Second Class</td>
-                                  </tr><tr>
-                                  <td>St Bawle to San Ghammea</td>
-                                  <td>15-11-2020 - 3:22 PM</td>
-                                  <td>$ 0</td>
-                                  <td>$ 5050</td>
-                                  <td>18 Seat(s) Available for First Class<hr/>900 Seat(s) Available for Second Class</td>
-                                  </tr><tr>
-                                  <td>St Bawle to San Ghammea</td>
-                                  <td>18-09-2021 - 09:00 AM</td>
-                                  <td>$ 5260</td>
-                                  <td>$ 0</td>
-                                  <td>20 Seat(s) Available for First Class<hr/>896 Seat(s) Available for Second Class</td>
-                                  </tr><tr>
-                                  <td>Urmkirkey to Longdale</td>
-                                  <td>12-10-2021 - 09:00 AM</td>
-                                  <td>$ 303</td>
-                                  <td>$ 0</td>
-                                  <td>500 Seat(s) Available for First Class<hr/>1198 Seat(s) Available for Second Class</td>
-                                  </tr><tr>
-                                  <td>Rutherglen to Tylwaerdreath</td>
-                                  <td>12-10-2021 - 11:10 AM</td>
-                                  <td>$ 0</td>
-                                  <td>$ 80</td>
-                                  <td>394 Seat(s) Available for First Class<hr/>780 Seat(s) Available for Second Class</td>
-                                  </tr><tr>
-                                  <td>Cirencester to Bournemouth</td>
-                                  <td>12-10-2021 - 12:20 AM</td>
-                                  <td>$ 0</td>
-                                  <td>$ 51</td>
-                                  <td>399 Seat(s) Available for First Class<hr/>850 Seat(s) Available for Second Class</td>
-                                  </tr><tr>
-                                  <td>Dawsbury to Blencathra</td>
-                                  <td>12-10-2021 - 10:59 PM</td>
-                                  <td>$ 0</td>
-                                  <td>$ 56</td>
-                                  <td>19 Seat(s) Available for First Class<hr/>900 Seat(s) Available for Second Class</td>
-                                  </tr><tr>
-                                  <td>Hurstcracombe to Treeblooms</td>
-                                  <td>12-10-2021 - 11:02 AM</td>
-                                  <td>$ 107</td>
-                                  <td>$ 0</td>
-                                  <td>400 Seat(s) Available for First Class<hr/>999 Seat(s) Available for Second Class</td>
-                                  </tr><tr>
-                                  <td>Rutherglen to Tylwaerdreath</td>
-                                  <td>12-10-2021 - 04:45 AM</td>
-                                  <td>$ 0</td>
-                                  <td>$ 228</td>
-                                  <td>397 Seat(s) Available for First Class<hr/>850 Seat(s) Available for Second Class</td>
-                                  </tr><tr>
-                                  <td>Rutherglen to Tylwaerdreath</td>
-                                  <td>12-10-2021 - 04:45 AM</td>
-                                  <td>$ 0</td>
-                                  <td>$ 228</td>
-                                  <td>397 Seat(s) Available for First Class<hr/>850 Seat(s) Available for Second Class</td>
-                                  </tr><tr>
-                                  <td>Vlinginia to Onaginia</td>
-                                  <td>14-10-2021 - 10:00 AM</td>
-                                  <td>$ 324</td>
-                                  <td>$ 0</td>
-                                  <td>250 Seat(s) Available for First Class<hr/>598 Seat(s) Available for Second Class</td>
-                                  </tr>                            </tbody>
+                                <th>{{$ticket->name}}</th>
+                                <td>{{$ticket->origin}} to {{$ticket->destination}}</td>
+                                <td>{{$ticket->date}}</td>
+                                <td>{{$ticket->price}}</td>
+                                <td>{{$ticket->booked_seat}}</td>
+                                <td>{{$ticket->operator_name}}</td>
+                            </tr>
+                            @endforeach                            
+                        </tbody>
                     </table>
                 </div>
             </div>

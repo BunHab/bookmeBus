@@ -24,7 +24,7 @@
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-success elevation-4">
         <!-- Brand Logo -->
-        <a href="#" class="brand-link">
+        <a href="admin.php" class="brand-link">
 
             <span class="brand-text font-weight-light">{{now()->format('Y-m-d')}}</span>
         </a>
@@ -69,7 +69,7 @@
 
                     <li class="nav-item">
                         <a href="{{url('/admin/dashboard/schedule')}}" class="nav-link 
-                        active                            ">
+                                                    ">
                             <i class="nav-icon fas fa-calendar-day"></i>
                             <p>
                                 Schedules
@@ -77,7 +77,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{url('/admin/dashboard/route')}}" class="nav-link      ">
+                        <a href="{{url('/admin/dashboard/route')}}" class="nav-link">
                             <i class="nav-icon fas fa-route"></i>
                             <p>
                                 Routes
@@ -86,19 +86,19 @@
                     </li>
                     </li>
                     <li class="nav-item">
-                        <a href="{{url('/admin/dashboard/operator')}}" class="nav-link      ">
+                        <a href="{{url('/admin/dashboard/operator')}}" class="nav-link">
                             <i class="nav-icon fas fa-bus"></i>
                             <p>
-                                Operator 
+                                Operators
                             </p>
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="#" class="nav-link      ">
+                        <a href="{{url('/admin/dashboard/location')}}" class="nav-link active">
                             <i class="nav-icon fas fa-file-pdf"></i>
                             <p>
-                                Report
+                                Location
                             </p>
                         </a>
 
@@ -149,6 +149,11 @@
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1 class="m-0 text-dark"> Administrator Dashboard</h1>
+                        @if(session('status'))
+                        <div>
+                            <h6 class="m-0 text-red"> {{session('status')}}</h6>
+                        </div>
+                        @endif
                     </div><!-- /.col -->
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
@@ -166,13 +171,12 @@
                 <div class="card card-success">
                     <div class="card-header">
                         <h3 class="card-title">
-                            All Dynamic Schedules</h3>
+                            All Location</h3>
                         <div class='float-right'>
-                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                            <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
                                 data-target="#add">
-                                Add New One-Time Schedule &#128645;
-                            
-                        </div>
+                                Add New Location &#128645;
+                            </button></div>
                     </div>
 
                     <div class="card-body">
@@ -182,36 +186,27 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Operator</th>
-                                    <th>Route</th>
-                                    <th>Departure Time</th>
-                                    <th>Arrival Time</th>
-                                    <th>Price</th>
-                                    <th>Max Seat</th>
-                                    <th>Actions</th>
+                                    <th>Operator Name</th>
+                                    
+                                    
+                                    <th style="width: 30%;">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($schedules as $schedule)
+                                @foreach($locations as $location)
                                 <tr>
-                                    <td>{{$schedule->schedule_id}}</td>
-                                    <td>{{$schedule->operator_name}}</td>
-                                    <td>{{$schedule->origin}} to {{$schedule->destination}}</td>
-                                    <td>{{$schedule->departure_time}}</td>
-                                    <td>{{$schedule->arrival_time}}</td>
-                                    <td>{{$schedule->price}}$</td>
-                                    <td>{{$schedule->max_seat}}</td>
+                                    <td>{{$location->location_id}}</td>
+                                    <td>{{$location->location_name}}</td>
                                     
-
                                     <td>
-                                        <form method="get" action="{{url('admin/dashboard/deleteSchedule/'.$schedule->schedule_id)}}">
+                                        <form method="GET" action="{{url('/admin/dashboard/deleteLocation/'.$location->location_id)}}">
                                             <button type="button" class="btn btn-primary" data-toggle="modal"
-                                                data-target="#edit{{$schedule->schedule_id}}">
+                                                data-target="#edit{{$location->location_id}}">
                                                 Edit
-                                            </button> 
+                                            </button> -
 
                                             <input type="hidden" class="form-control" name="del_train"
-                                                value="104" required id="">
+                                                value="1" required id="">
                                             <button type="submit"
                                                 onclick="return confirm('Are you sure about this?')"
                                                 class="btn btn-danger">
@@ -221,60 +216,32 @@
                                     </td>
                                 </tr>
 
-                                <div class="modal fade" id="edit{{$schedule->schedule_id}}">
+                                <div class="modal fade" id ="edit{{$location->location_id}}">
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h4 class="modal-title">Editing  Schedule &#128642;</h4>
+                                                <h4 class="modal-title">Editing Location</h4>
                                                 <button type="button" class="close" data-dismiss="modal"
                                                     aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-
-
-                                                <form action="{{url('admin/dashboard/updateSchedule/'.$schedule->schedule_id)}}" method="post">
+                                                <form action="{{url('admin/dashboard/updateLocation/'.$location->location_id)}}" method="post">
                                                     @csrf
                                                     @method('PUT')
                                                     <input type="hidden" class="form-control" name="id"
-                                                        value="104" required id="">
+                                                         required >
+                                                    <p>Location Name : <input type="text" class="form-control"
+                                                            name="update_name" value="{{$location->location_name}}"
+                                                            required minlength="3" ></p>
+                                                                                            
+                                                    <p>
 
-
-                                                    <p>Route : 
-                                                        <select name="new_route_id" class="form-control" required>
-                                                            <option value="" selected disabled hidden>Select Route</option>
-                                                            @foreach($routes as $route)
-                                                            <option value="{{$route->bus_route_id}}">{{$route->origin}} to {{$route->destination}}, {{$route->operator_name}}</option>
-                                                            @endforeach
-                                                        </select>
+                                                        <input class="btn btn-info" type="submit" value="Edit Location"
+                                                            name='edit'>
                                                     </p>
-                                                    <p>
-                                                        Max Seat : <input class="form-control"
-                                                            type="number" min="0" value="{{$schedule->max_seat}}"
-                                                            name="new_max_seat" required id="">
-                                                    </p>
-                                                    <p>
-                                                        Departure Time : <input class="form-control" type="time"
-                                                        value="{{$schedule->departure_time}}" name="new_dtime"
-                                                        required id="">
-                                                    </p>
-                                                    <p>
-                                                        Arrival Time :
-                                                        <input class="form-control" type="time"
-                                                            value="{{$schedule->arrival_time}}" name="new_atime"
-                                                            required id="">
-
-                                                    </p>
-                                                    <p>
-                                                        Price : <input class="form-control" type="number"
-                                                            value="{{$schedule->price}}" name="new_price"
-                                                            required id="">
-                                                    </p>
-                                                    <p class="float-right"><input type="submit" name="edit"
-                                                            class="btn btn-success" value="Edit Schedule"></p>
                                                 </form>
-
                                                 <div class="modal-footer justify-content-between">
                                                     <button type="button" class="btn btn-default"
                                                         data-dismiss="modal">Close</button>
@@ -285,8 +252,7 @@
                                         <!-- /.modal-dialog -->
                                     </div>
                                     <!-- /.modal -->
-
-                                    @endforeach 
+                                    @endforeach
                             </tbody>
                            
                         </table>
@@ -306,79 +272,32 @@
 <div class="modal-dialog modal-lg">
     <div class="modal-content" align="center">
         <div class="modal-header">
-            <h4 class="modal-title">Add New Schedule &#128649;
+            <h4 class="modal-title">Add New Location &#128646;
             </h4>
-
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div class="modal-body">
-            <form action="/admin/dashboard/addSchedule" method="post">
-            @csrf
-                <!-- <div class="row">
-                    <div class="col-sm-6">
-                        Origin : <select class="form-control" name="train_id" required id="">
-                            <option value="">Select Origin</option>
-                            <option value='1'>Kano Rails</option><option value='2'>British Railways</option><option value='3'>Wester Railways</option><option value='7'>Lagos Rails</option><option value='8'>Marble Railways</option><option value='9'>Renfee R</option><option value='10'>Venice Express</option><option value='11'>Orient Express</option><option value='12'>Phantom Express</option><option value='13'>Marshland Express</option>                            </select>
-
-                    </div>
-                    <div class="col-sm-6">
-                        Destination : <select class="form-control" name="route_id" required id="">
-                            <option value="">Select Destination</option>
-                            <option value='3'>St Bawle to San Ghammea</option><option value='4'>Hurstcracombe to Treeblooms</option><option value='5'>Cape Onbac to Ringkya</option><option value='6'>Treeblooms to Bridghamgascon</option><option value='7'>Fort Hammits to Aux Cursbur</option><option value='8'>Addersfield to Glenarm</option><option value='9'>Peterbrugh to Ffestiniog</option><option value='10'>Dawsbury to Blencathra</option><option value='11'>Rutherglen to Tylwaerdreath</option><option value='12'>Cirencester to Bournemouth</option><option value='13'>Laencaster to Fournemouth</option><option value='14'>Urmkirkey to Longdale</option><option value='15'>Vlinginia to Onaginia</option><option value='16'>Onaginia to Epleburgh</option><option value='17'>Epleburgh to Kapwood</option><option value='18'>Vlinginia to Oroville</option><option value='19'>Vlinginia to Inaschester</option><option value='20'>Pnhom Penh to Siem Reap</option>                            </select>
-                    </div>
-                </div> -->
-                <div class="row">
-                    <div class="col-sm-6">
-                        Price : <input class="form-control" type="number" min="1" name="price" required
-                            id="">
-                    </div>
-                    <div class="col-sm-6">
-
-                        Maximun seat : <input class="form-control" type="number" name="max_seat" min="1" required
-                            id="">
-                    </div>
-                </div>
-                <div class="row">
+            <form action="/admin/dashboard/saveLocation" method="post">
+                @csrf
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Location Name</th>
+                        <td><input type="text" class="form-control" name="name" required minlength="3" id=""></td>
+                    </tr>
                     
-                    <div class="col-sm-12">
+                    
+                    <tr>
+                        <td colspan="2">
 
-                        Route :
-                        <select name="route_id" class="form-control" required>
-                                <option value="" selected disabled hidden>Select Route</option>
-                                @foreach($routes as $route)
-                                    <option value="{{$route->bus_route_id}}">{{$route->origin}} to {{$route->destination}}, {{$route->operator_name}}</option>
-                                @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        Departure time : <input class="form-control" type="time" name="departure_time"
-                            required id="">
-                    </div>
-                    <div class="col-sm-6">
-
-                        Arrival time : <input class="form-control" type="time" name="arrival_time" required id="">
-                    </div>
-                </div>
-                <hr>
-                <input type="submit" name="submit" class="btn btn-success" value="Add Schedule"></p>
+                            <input class="btn btn-info" type="submit" value="Add Location" name='submit'>
+                        </td>
+                    </tr>
+                </table>
             </form>
 
-            <script>
-            function check(val) {
-                val = new Date(val);
-                var age = (Date.now() - val) / 31557600000;
-                var formDate = document.getElementById('date');
-                if (age > 0) {
-                    alert("Past/Current Date not allowed");
-                    formDate.value = "";
-                    return false;
-                }
-            }
-            </script>
+
 
         </div>
 
@@ -388,9 +307,6 @@
 <!-- /.modal-dialog -->
 </div>
 
-
-
-            
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->

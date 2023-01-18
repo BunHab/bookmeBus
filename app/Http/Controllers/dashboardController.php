@@ -19,23 +19,17 @@ class dashboardController extends Controller
         return view('admin.adminDashboard');
     }
 
-    public function show_operator(){
-        return view('admin.operatorControl');
-    }
-
     public function show_payment(){
-        return view('admin.paymentControl');
+        $ticket_db = $ticket_db = DB::select("select * from tickets inner join schedules on tickets.schedule_id =
+        schedules.schedule_id inner join bus_routes on schedules.bus_route_id =
+        bus_routes.bus_route_id inner join operators on bus_routes.operator_id =
+        operators.operator_id inner join users on tickets.id = users.id");
+        return view('admin.paymentControl')->with(['tickets' =>$ticket_db]);
     }
 
-    public function show_route(){
-        return view('admin.routeControl');
-    }
+    
 
     public function show_schedule(){
         return view('admin.scheduleControl');
-    }
-
-    public function show_user(){
-        return view('admin.userControl');
     }
 }

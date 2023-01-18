@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOperatorsTable extends Migration
+class CreateLocationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class CreateOperatorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('operators', function (Blueprint $table) {
-            $table->bigIncrements('operator_id');
-            $table->string('operator_name');
-            $table->string('operator_phone_num');
+        Schema::create('locations', function (Blueprint $table) {
+            $table->bigIncrements('location_id');
+            $table->string('location_name');
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ class CreateOperatorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('operators');
+        Schema::dropIfExists('locations');
     }
 }

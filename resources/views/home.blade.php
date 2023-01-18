@@ -35,6 +35,8 @@
     <link rel="stylesheet" type="text/css" href="{{asset('/assets/')}}/css/responsive.css">
 
     <link rel="stylesheet" type="text/css" href="{{asset('/assets/')}}/css/color/themecolor.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
 @endsection
 
@@ -54,11 +56,11 @@
                     <h1 class="main-heading-title"><span class="main-element themecolor" data-elements=" Reservation System, Reservation System, Reservation System"></span>
                     </h1>
 
-                    <p class="main-heading-text">WELCOME TO,<br />E - TICKETING FOR RAILWAYS</p>
+                    <p class="main-heading-text">WELCOME TO,<br />E - TICKETING FOR BUSES</p>
 
                     <div class="btn-bar">
 
-                        <a href="{{url('/login')}}" class="btn btn-custom theme_background_color">Make Reservations Now</a>
+                        <a href="#" class="btn btn-custom theme_background_color">Make Your Booking Now</a>
 
                     </div>
 
@@ -121,86 +123,61 @@
 ============================================================================================================================-->
 
 <section class="aboutus white-background black" id="two">
-
     <div class="container">
-
         <div class="row">
-
             <div class="col-md-12 text-center black">
-
                 <h3 class="title">ABOUT <span class="themecolor">US</span></h3>
-
-                <p class="a-slog">Developed By Adelabu Oluwatoyin Simbiat (16/52HA016) and Supervised By Dr. A. O Ameen</p>
-
+                <p class="a-slog">Developed By MenglySovan KimChhorngTry SovannaKongMoa YongHao </p>
             </div>
-
         </div>
-
+  
         <div class="gap">
-
-
         </div>
-
-
+  
+  
         <div class="row about-box">
-
             <div class="col-sm-4 text-center">
-
                 <div class="margin-bottom">
-
                     <i class="fa fa-newspaper-o"></i>
-
-                    <h4>Get Train Tickets from the comfort of your home</h4>
-
-                    <p class="black">Book train tickets from anywhere using the robust ticketing platform exclusively built to provide the passengers with pleasant ticketing experience. </p>
-
+                    <h4>Get Bus Tickets from the comfort of your home</h4>
+                    <p class="black">Book Bus tickets from anywhere using the robust ticketing platform exclusively built to provide the passengers with pleasant ticketing experience. </p>
                 </div>
                 <!-- / margin -->
-
+  
             </div>
             <!-- /col -->
-
+  
             <div class="col-sm-4 about-line text-center">
-
                 <div class="margin-bottom">
-
                     <i class="fa fa-diamond"></i>
-
-                    <h4>Train & Ticketing related information at your fingertips</h4>
-
-                    <p class="black">Checkout available seats, route information, fare information on real time basis with Esheba Platform.</p>
-
+                    <h4>BUS & Ticketing related information at your fingertips</h4>
+                    <p class="black">Checkout available seats, route information, fare information on real time basis with BOOK ME BUS.</p>
                 </div>
                 <!-- / margin -->
-
+  
             </div>
             <!-- /col -->
-
+  
             <div class="col-sm-4 text-center">
-
+  
                 <div class="margin-bottom">
-
+  
                     <i class="fa fa-dollar"></i>
-
+  
                     <h4>Pay Securely</h4>
-
+  
                     <p class="black">Online payment. (NO REFUND!)</p>
-
+  
                 </div>
                 <!-- / margin -->
-
+  
             </div>
             <!-- /col -->
-
+  
         </div>
         <!-- /row -->
-
-
-
-
-
     </div>
-</section>
+  </section>
 
 
 @endsection

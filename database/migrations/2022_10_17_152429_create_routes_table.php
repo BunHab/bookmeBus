@@ -13,11 +13,11 @@ class CreateRoutesTable extends Migration
      */
     public function up()
     {
-        Schema::create('routes', function (Blueprint $table) {
-            $table->bigIncrements('id');
+        Schema::create('bus_routes', function (Blueprint $table) {
+            $table->bigIncrements('bus_route_id');
             $table->string('origin');
             $table->string('destination');
-            $table->foreignId('operator_id')->constrained('operators')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('operator_id')->constrained('operators')->references('operator_id')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -30,5 +30,6 @@ class CreateRoutesTable extends Migration
     public function down()
     {
         Schema::dropIfExists('routes');
+        
     }
 }
